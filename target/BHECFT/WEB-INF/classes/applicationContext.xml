@@ -10,6 +10,8 @@
     <!--默认的servlet-->
     <mvc:default-servlet-handler/>
 
+
+
     <!--前缀后缀拼接bean-->
     <!--配置资源地址 /WEB-INF/xx.jsp-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="jspViewResolver">
@@ -44,18 +46,54 @@
     <!--</bean>-->
 
     <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
-    <!--!!批量扫描mapper和mapper.xml-->
-    <!--    <property name="basePackage" value="com.yang"/>-->
-    <!--    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
+    <!--&lt;!&ndash;!!批量扫描mapper和mapper.xml&ndash;&gt;-->
+        <!--<property name="basePackage" value="com.yang"/>-->
+        <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
     <!--</bean>-->
-    <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
-        <!--<property name="configLocation" value="classpath:mybatis-config.xml"/>-->
-        <!--<property name="dataSource" ref="dataSource"/>-->
-        <!--<property name="mapperLocations" value="classpath:com/yang"/>-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:com/yang/dao/*.xml"/>
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="annotationClass" value="org.springframework.stereotype.Repository" />
+        <property name="basePackage" value="com.yang"/>
+    </bean>
+    <!-- 连接池配置 -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!-- 最大连接数 -->
+        <property name="maxTotal" value="30" />
+        <!-- 最大空闲连接数 -->
+        <property name="maxIdle" value="10" />
+        <!-- 每次释放连接的最大数目 -->
+        <property name="numTestsPerEvictionRun" value="1024" />
+        <!-- 释放连接的扫描间隔（毫秒） -->
+        <property name="timeBetweenEvictionRunsMillis" value="30000" />
+        <!-- 连接最小空闲时间 -->
+        <property name="minEvictableIdleTimeMillis" value="1800000" />
+        <!-- 连接空闲多久后释放, 当空闲时间>该值 且 空闲连接>最大空闲连接数 时直接释放 -->
+        <property name="softMinEvictableIdleTimeMillis" value="10000" />
+        <!-- 获取连接时的最大等待毫秒数,小于零:阻塞不确定的时间,默认-1 -->
+        <property name="maxWaitMillis" value="1500" />
+        <!-- 在获取连接的时候检查有效性, 默认false -->
+        <property name="testOnBorrow" value="true" />
+        <!-- 在空闲时检查有效性, 默认false -->
+        <property name="testWhileIdle" value="true" />
+        <!-- 连接耗尽时是否阻塞, false报异常,ture阻塞直到超时, 默认true -->
+        <property name="blockWhenExhausted" value="true" />
+    </bean>
+    <!-- jedis客户端单机版 -->
+    <!--<bean id="redisClient" class="redis.clients.jedis.JedisPool">-->
+        <!--<constructor-arg name="host" value="172.16.17.6"></constructor-arg>-->
+        <!--<constructor-arg name="port" value="6379"></constructor-arg>-->
+
+        <!--<constructor-arg name="poolConfig" ref="jedisPoolConfig"></constructor-arg>-->
+        <!--<constructor-arg name="timeout" value="30000"></constructor-arg>-->
+        <!--<constructor-arg name="password" value="cwbcwb"></constructor-arg>-->
+
     <!--</bean>-->
 
-    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
-        <!--<property name="annotationClass" value="org.springframework.stereotype.Repository" />-->
-        <!--<property name="basePackage" value="com.yang"/>-->
-    <!--</bean>-->
+
+
+
 </beans>

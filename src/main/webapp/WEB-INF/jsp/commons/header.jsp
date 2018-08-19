@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <script type="text/javascript" src="/js/base-v1.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/jquery-1.6.4.js"></script>
 <!--shortcut start-->
 <jsp:include page="shortcut.jsp" />
 <!--shortcut end-->
@@ -49,90 +50,6 @@
 					<h2><a href="http://www.jd.com/allSort.aspx" clstag="homepage|keycount|home2013|06a">全部商品分类<b></b></a></h2>
 				</div>
 				<div id="_JD_ALLSORT" class="mc">
-					<div class="item fore1">
-						<span data-split="1"><h3>
-								<a href="/products/1.html">图书、音像、电子书刊</a>
-							</h3>
-							<s></s></span>
-					</div>
-					<div class="item fore2">
-						<span data-split="1"><h3>
-								<a href="/products/74.html">家用电器</a>
-							</h3>
-							<s></s></span>
-					</div>
-					<div class="item fore3">
-						<span data-split="1"><h3>
-								<a href="/products/161.html">电脑、办公</a>
-							</h3>
-							<s></s></span>
-					</div>
-					<div class="item fore4">
-						<span data-split="1"><h3>
-								<a href="/products/249.html">个护化妆</a>
-							</h3>
-							<s></s></span>
-					</div>
-					<div class="item fore5">
-						<span data-split="1"><h3>
-								<a href="/products/290.html">钟表</a>
-							</h3>
-							<s></s></span>
-					</div>
-					<div class="item fore6">
-						<span data-split="1"><h3>
-								<a href="/products/296.html">母婴</a>
-							</h3>
-							<s></s></span>
-					</div>
-					<div class="item fore7">
-						<span data-split="1"><h3>
-								<a href="/products/378.html">食品饮料、保健食品</a>
-							</h3>
-							<s></s></span>
-					</div>
-					<div class="item fore8">
-						<span data-split="1"><h3>
-								<a href="/products/438.html">汽车用品</a>
-							</h3>
-							<s></s></span>
-					</div>
-					<div class="item fore9">
-						<span data-split="1"><h3>
-								<a href="/products/495.html">玩具乐器</a>
-							</h3>
-							<s></s></span>
-					</div>
-					<div class="item fore10">
-						<span data-split="1"><h3>
-								<a href="/products/558.html">手机</a>
-							</h3>
-							<s></s></span>
-					</div>
-					<div class="item fore11">
-						<span data-split="1"><h3>
-								<a href="/products/580.html">数码</a>
-							</h3>
-							<s></s></span>
-					</div>
-					<div class="item fore12">
-						<span data-split="1"><h3>
-								<a href="/products/633.html">家居家装</a>
-							</h3>
-							<s></s></span>
-					</div>
-					<div class="item fore13">
-						<span data-split="1"><h3>
-								<a href="/products/699.html">厨具</a>
-							</h3>
-							<s></s></span>
-					</div>
-					<div class="item fore14">
-						<span data-split="1"><h3>
-								<a href="/products/749.html">服饰内衣</a>
-							</h3>
-							<s></s></span>
-					</div>
 					<div class="extra">
 						<a {if="" pageconfig.ishome}clstag="homepage|keycount|home2013|0614a"
 							{="" if}="" href="http://www.jd.com/allSort.aspx">全部商品分类</a>
@@ -154,4 +71,33 @@
 </div>
 <script type="text/javascript">
 (function(){if(pageConfig.navId){var object=document.getElementById("nav-"+pageConfig.navId);if(object)object.className+=" curr";}})();
+</script>
+<script type="text/javascript">
+	$.ajax({
+		type:"post",
+		url:"/tb_item_catController/catHeader.do",
+		dataType:"json",
+		data:{"id":0},
+		success:function (data) {
+			abc(data);
+		},error:function () {
+			alert("失败")
+		}
+	})
+	function abc(data) {
+		console.log(data)
+		$.each(data,function (i,item) {
+			var html =
+					"<div class=\"item fore"+item.sortOrder+"\">"+
+					"<span data-split=\""+item.sortOrder+"\"><h3>"+
+					"<a href=\"/products/"+item.id+".html\">"+item.name+"</a>"+
+					"</h3>"+
+					"<s></s></span>"+
+					"</div>"
+		$(".mc").append(html)
+		})
+	}
+
+
+
 </script>
